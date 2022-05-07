@@ -6,16 +6,6 @@ import (
 	"github.com/gityokie/gocrud/internal/models"
 )
 
-func ListBook(c *gin.Context) {
-	var book []models.Book
-	err := models.GetAllBook(&book)
-	if err != nil {
-		api_helpers.RespondJSON(c, 404, book)
-	} else {
-		api_helpers.RespondJSON(c, 200, book)
-	}
-}
-
 func AddNewBook(c *gin.Context) {
 	var book models.Book
 	c.BindJSON(&book)
