@@ -1,7 +1,8 @@
-package ApiHelpers
+package api_helpers
 
 import (
 	"fmt"
+
 	"github.com/gin-gonic/gin"
 )
 

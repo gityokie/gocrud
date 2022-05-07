@@ -1,18 +1,16 @@
-package Controllers
+package controllers
 
 import (
-	"../ApiHelpers"
-	"../Models"
 	"github.com/gin-gonic/gin"
 )
 
 func ListBook(c *gin.Context) {
-	var book []Models.Book
-	err := Models.GetAllBook(&book)
+	var book []models.Book
+	err := models.GetAllBook(&book)
 	if err != nil {
-		ApiHelpers.RespondJSON(c, 404, book)
+		api_helpers.RespondJSON(c, 404, book)
 	} else {
-		ApiHelpers.RespondJSON(c, 200, book)
+		api_helpers.RespondJSON(c, 200, book)
 	}
 }
 

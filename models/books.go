@@ -1,8 +1,8 @@
-package Models
+package models
 
 import (
-	"../Config"
 	"fmt"
+
 	_ "github.com/go-sql-driver/mysql"
 )
 
