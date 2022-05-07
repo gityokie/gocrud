@@ -19,10 +19,9 @@ func New() (*MysqlDB, error) {
 	pass := viper.GetString(utils.DbPwd)
 	port := viper.GetString(utils.DbPort)
 	dbName := viper.GetString(utils.DbName)
+	dbHost := viper.GetString(utils.DbHost)
 
-	var dsn string
-
-	dsn = fmt.Sprintf("%s:%s@tcp(127.0.0.1:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", user, pass, port, dbName)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", user, pass, dbHost, port, dbName)
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {

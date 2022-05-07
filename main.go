@@ -5,11 +5,9 @@ import (
 	"github.com/gityokie/gocrud/internal/routers"
 	"github.com/gityokie/gocrud/internal/store/mysql"
 	"github.com/gityokie/gocrud/internal/utils"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	"gorm.io/driver/mysql"
 )
-
-var err error
 
 func main() {
 
@@ -18,7 +16,7 @@ func main() {
 		logger.Log.Fatal("failed to initialize database", err)
 	}
 
-	r := routers.SetupRouter()
+	r := routers.SetupRouter(mysql, DebugPrintRoute)
 	// running
 	r.Run()
 }
@@ -48,7 +46,8 @@ func BindEnvs() {
 
 func EnvMustBeSet(key string) {
 	if !viper.IsSet(key) {
-		logger.Log.WithField(key, false).Fatal("not set")
+
+		logger.Log.WithField(key, key).Fatalf("%v: not set", key)
 	}
 }
 
@@ -58,4 +57,8 @@ func CheckMustBeSetEnvs() {
 	EnvMustBeSet(utils.DbPort)
 	EnvMustBeSet(utils.DbName)
 	EnvMustBeSet(utils.DbTimeZone)
+}
+
+func DebugPrintRoute(httpMethod, absolutePath, handlerName string, nuHandlers int) {
+	logger.Log.WithFields(logrus.Fields{"httpMethod": httpMethod, "path": absolutePath, "handlerName": handlerName, "nuHandlers": nuHandlers}).Info("endpointRequest")
 }

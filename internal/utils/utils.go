@@ -1,7 +1,7 @@
 package utils
 
 const (
-	AppName = "pulse"
+	AppName = "gocrud"
 	Port    = "port"
 )
 
