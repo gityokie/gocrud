@@ -1,10 +1,13 @@
 package routers
 
 import (
+	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gityokie/gocrud/internal/controllers"
+	"github.com/gityokie/gocrud/internal/logger"
 	"github.com/gityokie/gocrud/internal/store"
 )
 
@@ -13,10 +16,21 @@ type DebugPrintRouteFunc func(httpMethod, absolutePath, handlerName string, nuHa
 func SetupRouter(store store.Store, debugPrintRoute DebugPrintRouteFunc) *gin.Engine {
 	r := gin.Default()
 
-	r.LoadHTMLFiles("/home/maluki/disk2/gigs/gocrud/internal/routers/html/index.html")
-	r.GET("/index", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.html", gin.H{
-			"title": "Main website",
+	cwd, err := os.Getwd()
+	if err != nil {
+		logger.Log.Fatalf("failed to get current directory, err: %v", err)
+	}
+
+	r.LoadHTMLGlob(fmt.Sprintf("%s/internal/views/**/*", cwd))
+	r.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "home/index.tmpl", gin.H{
+			"title": "Home website",
+		})
+	})
+
+	r.GET("about", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "about/index.tmpl", gin.H{
+			"title": "About website",
 		})
 	})
 
